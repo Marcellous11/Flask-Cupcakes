@@ -17,14 +17,14 @@ db.create_all()
 CUPCAKE_DATA = {
     "flavor": "TestFlavor",
     "size": "TestSize",
-    "rating": 5,
+    "rating": 5.0,
     "image": "http://test.com/cupcake.jpg"
 }
 
 CUPCAKE_DATA_2 = {
     "flavor": "TestFlavor2",
     "size": "TestSize2",
-    "rating": 10,
+    "rating": 10.0,
     "image": "http://test.com/cupcake2.jpg"
 }
 
@@ -61,7 +61,7 @@ class CupcakeViewsTestCase(TestCase):
                         "id": self.cupcake.id,
                         "flavor": "TestFlavor",
                         "size": "TestSize",
-                        "rating": 5,
+                        "rating": 5.0,
                         "image": "http://test.com/cupcake.jpg"
                     }
                 ]
@@ -79,7 +79,7 @@ class CupcakeViewsTestCase(TestCase):
                     "id": self.cupcake.id,
                     "flavor": "TestFlavor",
                     "size": "TestSize",
-                    "rating": 5,
+                    "rating": 5.0,
                     "image": "http://test.com/cupcake.jpg"
                 }
             })
@@ -92,7 +92,7 @@ class CupcakeViewsTestCase(TestCase):
             self.assertEqual(resp.status_code, 201)
 
             data = resp.json
-
+            
             # don't know what ID we'll get, make sure it's an int & normalize
             self.assertIsInstance(data['cupcake']['id'], int)
             del data['cupcake']['id']
@@ -101,7 +101,7 @@ class CupcakeViewsTestCase(TestCase):
                 "cupcake": {
                     "flavor": "TestFlavor2",
                     "size": "TestSize2",
-                    "rating": 10,
+                    "rating": 10.0,
                     "image": "http://test.com/cupcake2.jpg"
                 }
             })
