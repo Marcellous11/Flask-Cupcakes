@@ -15,11 +15,12 @@ function generateCupcakeHTML(cupcake) {
 // Get request to get cupcake data from API
 async function showInitalCupcakes() {
 	const response = await axios.get(`${BASE_URL}/cupcakes`);
-
-	for (let cupcakeData of response.data.cupcakes) {
-		let newCupcake = $(generateCupcakeHTML(cupcakeData));
+	console.log(response);
+	for (let cupcakeData of response.data.cupcake) {
+		let newCupcake = generateCupcakeHTML(cupcakeData);
 		$('#new-cupcake-list').append(newCupcake);
 	}
+	showInitalCupcakes();
 }
 form = document.getElementById('new-cupcake-form');
 form.addEventListener('submit', async function(e) {
@@ -36,18 +37,23 @@ form.addEventListener('submit', async function(e) {
 		size,
 		image
 	});
+	console.log(newCupcakeresponse.data.cupcake);
 
-	let newCupcakes = $(generateCupcakeHTML(newCupcakeresponse.data.cupcakes));
+	let newCupcakes = generateCupcakeHTML(newCupcakeresponse.data.cupcake);
 	$('#new-cupcake-list').append(newCupcakes);
 	$('#new-cupcake-form').trigger('reset');
+
+	delBtn = document.getElementsByClassName('delete-btn');
+	Array.from(delBtn).forEach(function(element) {
+		console.log(element);
+
+		element.addEventListener('click', async function(e) {
+			e.preventDefault();
+			let $cupcake = $(e.target).closest('div');
+			let cupcakeId = $cupcake.attr('data-cupcake-id');
+
+			await axios.delete(`${BASE_URL}/cupcakes/${cupcakeId}`);
+			$cupcake.remove();
+		});
+	});
 });
-
-// delBtn = document.getElementsByClassName('delete-btn');
-// delBtn.addEventListener('click', async function(e) {
-// 	e.preventDefault();
-// 	let $cupcake = $(evt.target).closest('div');
-// 	let cupcakeId = $cupcake.attr('data-cupcake-id');
-
-// 	await axios.delete(`${BASE_URL}/cupcakes/${cupcakeId}`);
-// 	$cupcake.remove();
-// });
